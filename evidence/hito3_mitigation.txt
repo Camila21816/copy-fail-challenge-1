@@ -1,12 +1,6 @@
-TIMESTAMP: 2026-05-18T02:36:46Z
-HOSTNAME: copy-fail-Camila-Paucar
-
-copy-fail-Camila-Paucar:~# rmmod algif_aead
-copy-fail-Camila-Paucar:~# lsmod
-Module                  Size  Used by
-copy_fail              16384  0
-
-copy-fail-Camila-Paucar:~$ python3 exploit.py
-Traceback (most recent call last):
-  File "exploit.py", line 6, in <module>
-OSError: [Errno 124] Protocol not supported
+2026-05-18T02:44:22Z
+copy-fail-Camila-Paucar
+rmmod algif_aead
+modprobe -r algif_aead
+lsmod
+Protocol not supported
