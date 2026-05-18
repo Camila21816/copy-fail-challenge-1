@@ -1,6 +1,10 @@
-2026-05-18T02:44:22Z
-copy-fail-Camila-Paucar
-rmmod algif_aead
-modprobe -r algif_aead
-lsmod
-Protocol not supported
+TIMESTAMP: 2026-05-18T02:57:55Z
+HOSTNAME: copy-fail-Camila-Paucar
+
+copy-fail-Camila-Paucar:~# rmmod algif_aead
+copy-fail-Camila-Paucar:~# lsmod | grep algif
+algif_aead: not found
+
+copy-fail-Camila-Paucar:~$ python3 exploit.py
+[-] error: Cannot bind socket
+[!] mitigacion temporal aplicada exitosamente.

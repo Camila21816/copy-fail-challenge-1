@@ -85,3 +85,10 @@ copy-fail-challenge/
 commit 1 12:02 - 12:07
 commit solution kernel panic
 commit 12:51
+## Hito 3: Temporary Mitigation
+To mitigate the vulnerability (Copy Fail) on the fly and prevent its exploitation, the affected cryptographic module was unloaded from the kernel space.
+
+The exact command used for mitigation is:
+`rmmod algif_aead`
+
+Removing this module causes the AF_ALG socket family to stop responding, completely closing the attack vector without the need to restart the system.
