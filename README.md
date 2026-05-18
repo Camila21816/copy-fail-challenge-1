@@ -85,7 +85,7 @@ copy-fail-challenge/
 commit 1 12:02 - 12:07
 commit solution kernel panic
 commit 12:51
-## Hito 3: Temporary Mitigation
+# commit Hito-3 Temporary Mitigation
 To mitigate the vulnerability (Copy Fail) on the fly and prevent its exploitation, the affected cryptographic module was unloaded from the kernel space.
 
 The exact command used for mitigation is:
