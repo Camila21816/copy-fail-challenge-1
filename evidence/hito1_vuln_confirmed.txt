@@ -1,0 +1,21 @@
+TIMESTAMP: 2026-05-18T02:03:20Z
+HOSTNAME_CHECK_16: copy-fail-Camila-Paucar
+HOSTNAME_CHECK_20: copy-fail-Camila-Paucar
+
+copy-fail login: student
+Password: 
+
+copy-fail-Camila-Paucar:~$ hostname
+copy-fail-Camila-Paucar
+
+copy-fail-Camila-Paucar:~$ id
+uid=1000(student) gid=1000(student) groups=1000(student)
+
+copy-fail-Camila-Paucar:~$ uname -a
+Linux copy-fail-Camila-Paucar 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux
+Linux copy-fail-Camila-Paucar 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux
+
+copy-fail-Camila-Paucar:~$ cat /proc/crypto | grep -E "name|driver"
+name         : aead
+driver       : algif_aead
+module       : kernel
