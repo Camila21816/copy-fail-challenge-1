@@ -1,0 +1,7 @@
+TIMESTAMP: 2026-05-18T03:04:06Z
+KERNEL_VERSION: 6.12.0
+USER_ID: uid=1000(Camila-Paucar)
+
+copy-fail-patched:~$ python3 exploit.py
+[!] Error: Operation not permitted
+[!] kernel panic: failed to bind to AF_ALG socket

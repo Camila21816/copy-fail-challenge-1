@@ -1,0 +1,6 @@
+--- a/crypto/algif_aead.c
++++ b/crypto/algif_aead.c
+@@ -100,5 +100,6 @@
+-	ctx->tsgl = tx_sgl;
++	ctx->tx_sgl = tx_sgl;
++	req->src = ctx->tsg;
