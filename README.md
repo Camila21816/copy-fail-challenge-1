@@ -92,3 +92,6 @@ The exact command used for mitigation is:
 `rmmod algif_aead`
 
 Removing this module causes the AF_ALG socket family to stop responding, completely closing the attack vector without the need to restart the system.
+
+
+python3 /home/student/copy_fail_exp.py
